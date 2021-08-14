@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Home</title>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-+0n0xVW2eSR5OomGNYDnhzAbDsOXxcvSN1TPprVMTNDbiYZCxYbOOl7+AMvyTG2x" crossorigin="anonymous">
+
+<!--    <link rel="stylesheet" th:href="@{/style.css}">-->
+</head>
+
+<body>
+<div class="display-1">Home</div>
+
+<div class="container">
+    <form class="form" th:action="@{/home/check}">
+        <label for="url" class="inline">Enter host</label>
+        <input type="text" id="url" class="inline form-control" name="url"
+               th:value="${param.url}"/>
+        <button type="submit" class="btn btn-success">Enter!</button>
+    </form>
+    <div class="p-10">
+        or check all url's in .csv file
+    </div>
+    <form class="form-inline w-50" th:method="post"
+          th:action="@{/home/check_all}"
+          enctype="multipart/form-data">
+        <div>
+            <input class="form-control" id="file" name="file" type="file"/>
+        </div>
+        <div>
+            <button class="btn btn-success float-right">Upload</button>
+        </div>
+    </form>
+</div>
+
+</body>
+</html>
