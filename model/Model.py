@@ -2,8 +2,7 @@ from catboost import CatBoostClassifier
 from sklearn.feature_extraction.text import CountVectorizer, TfidfVectorizer
 from sklearn.model_selection import cross_val_score, KFold
 from sklearn import metrics
-from sklearn.metrics import accuracy_score, roc_auc_score, precision_score, recall_score
-
+from sklearn.metrics import accuracy_score, roc_auc_score, f1_score
 class Model():
     def __init__(self, depth=10, metric_period=100):
         self.model = CatBoostClassifier()
@@ -53,8 +52,7 @@ class Model():
         metrics = {
             'accuracy': accuracy_score(y_pred, y_true),
             'roc_auc': roc_auc_score(y_pred, y_true),
-            'precision': precision_score(y_pred, y_true),
-            'recall': recall_score(y_pred, y_true),
+            'f1_score': f1_score(y_pred, y_true),
         }
 
         return metrics
