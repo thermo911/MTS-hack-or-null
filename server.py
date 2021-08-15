@@ -22,6 +22,9 @@ def get_result_csv(file, methods=['GET']):
         preds = model.predict(X)
 
         data = np.stack((X, preds), axis=-1)
+        for i in range(len(data)):
+            if len(data[i][0]) > 4 and data[i][0][:4] == 'www.':
+                data[i][1] = 1
         pd.DataFrame(data).to_csv('data/' + new_path, header=None, index=False)
         return new_path
     except:
