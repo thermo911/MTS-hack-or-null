@@ -33,3 +33,8 @@ build/
 
 ### VS Code ###
 .vscode/
+
+# General
+.DS_Store
+.AppleDouble
+.LSOverride
