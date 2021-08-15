@@ -44,6 +44,7 @@ class Model():
 
     def evaluate(self, X, y_true):
         y_pred = self.model.predict(X)
+
         metrics = {
             'accuracy': accuracy_score(y_pred, y_true),
             'roc_auc': roc_auc_score(y_pred, y_true),
