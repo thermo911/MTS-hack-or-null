@@ -17,10 +17,10 @@ def get_result(site, methods=['GET']):
 
 @app.route('/get_result_csv/<file>')
 def get_result_csv(file, methods=['GET']):
-    try
+    try:
         df = pd.read_csv("data/" + file, header=None)
         new_path = file[:-4] + '_res.csv'
-        X = np.array(df[1])
+        X = np.array(df[0])
         preds = model.predict(X)
 
         data = np.stack((X, preds), axis=-1)

@@ -72,6 +72,7 @@ public class Controller {
         filename = requestService.getResultAll(filename);
 
         if (filename.equals("error")) {
+            logger.error("Service error!");
             throw new Exception();
         }
 
