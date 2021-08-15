@@ -3,5 +3,9 @@
 "iterations":[
 {"learn":[0.5369446517],"iteration":0,"passed_time":0.04333580943,"remaining_time":43.29247362},
 {"learn":[0.1511048143],"iteration":100,"passed_time":4.210263466,"remaining_time":37.47551342},
-{"learn":[0.1365580905],"iteration":200,"passed_time":8.944829606,"remaining_time":35.55681023}
+{"learn":[0.1365580905],"iteration":200,"passed_time":8.944829606,"remaining_time":35.55681023},
+{"learn":[0.127646119],"iteration":300,"passed_time":15.25474658,"remaining_time":35.42547462},
+{"learn":[0.1212760423],"iteration":400,"passed_time":22.34173371,"remaining_time":33.37331295},
+{"learn":[0.1154619345],"iteration":500,"passed_time":29.6415888,"remaining_time":29.5232591},
+{"learn":[0.1112548588],"iteration":600,"passed_time":35.98564048,"remaining_time":23.8906332}
 ]}
