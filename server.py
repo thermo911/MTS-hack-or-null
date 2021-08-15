@@ -6,7 +6,6 @@ app = Flask('test')
 
 @app.route('/get_result/<site>')
 def get_result(site, methods=['GET']):
-    print(site)
     try:
         if len(site) > 4 and site[:4] == 'www.':
             return 'user site'
@@ -27,10 +26,15 @@ def get_result_csv(file, methods=['GET']):
         for i in range(len(data)):
             if len(data[i][0]) > 4 and data[i][0][:4] == 'www.':
                 data[i][1] = 1
+            if data[i][1] == 1:
+                data[i][1] = 'user'
+            else:
+                data[i][1] = 'tech'
+
         pd.DataFrame(data).to_csv('data/' + new_path, header=None, index=False)
         return new_path
     except:
-        return error
+        return 'error'
 
 model = Model()
 model.load_model('best_model')
