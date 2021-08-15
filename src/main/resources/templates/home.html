@@ -45,7 +45,19 @@
 
         var btnUrl = document.getElementById("btn_url");
         btnUrl.addEventListener("click", function() {
-            result_url.innerHTML = httpGet("home/check/" + input_url.value);
+            var str = input_url.value;
+            str = str.trim()
+                     .replaceAll('http://', '')
+                     .replaceAll('https://', '');
+            var i = str.indexOf('/');
+            if (i != -1) {
+                str = str.substring(0, i);
+            }
+            if (str.length < 4) {
+                result_url.innerHTML = "incorrect data";
+            } else {
+                result_url.innerHTML = httpGet("home/check/" + str);
+            }
         });
 
         var btnCsv = document.getElementById("btn_csv");

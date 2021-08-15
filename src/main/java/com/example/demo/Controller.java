@@ -3,11 +3,12 @@ package com.example.demo;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.servlet.ModelAndView;
 
 import java.io.IOException;
 
@@ -34,6 +35,15 @@ public class Controller {
     @GetMapping("/check/{url}")
     @ResponseBody
     public ResponseEntity<String> checkOne(@PathVariable("url") String url) {
+
+
+        if (url.startsWith("http://"))
+            url = url.substring(7);
+        if (url.startsWith("https://"))
+            url = url.substring(8);
+        if (!isValidUrl(url)) {
+            return ResponseEntity.badRequest().body("incorrect data");
+        }
         logger.info("URL received: {}", url);
 
         String result = requestService.getResultOne(url);
@@ -47,7 +57,7 @@ public class Controller {
     }
 
     @PostMapping("/check_csv")
-    public String checkAll(@RequestParam("file") MultipartFile file) {
+    public String checkAll(@RequestParam("file") MultipartFile file) throws Exception {
         logger.info("File name {}, file content type {}, file size {}",
                 file.getOriginalFilename(), file.getContentType(), file.getSize());
         String filename;
@@ -55,11 +65,15 @@ public class Controller {
             filename = fileService.saveFile(file.getInputStream());
         } catch (IOException e) {
             logger.error("Error caught while saving {}", file.getOriginalFilename());
-            return "error";
+            throw new Exception(e);
         }
 
         logger.info("File saved: {}", filename);
         filename = requestService.getResultAll(filename);
+
+        if (filename.equals("error")) {
+            throw new Exception();
+        }
 
         return String.format("redirect:/home/file/%s", filename);
     }
@@ -76,11 +90,22 @@ public class Controller {
                 .body(data);
     }
 
-//    @GetMapping("/test")
-//    @ResponseBody
-//    public ResponseEntity<String> test() {
-//        System.out.println("777777777777777777777");
-//        return ResponseEntity.ok().body("test");
-//    }
+    @ExceptionHandler
+    public ModelAndView exceptionHandle(Exception e) {
+        ModelAndView modelAndView = new ModelAndView("error");
+        modelAndView.setStatus(HttpStatus.INTERNAL_SERVER_ERROR);
+        return modelAndView;
+    }
+
+    private boolean isValidUrl(String url) {
+        if (url.length() < 4)
+            return false;
+        boolean hasDots = false;
+        for (char c : url.toCharArray()) {
+            if (c == '.') hasDots = true;
+            if (c == '/') return false;
+        }
+        return hasDots;
+    }
 
 }
