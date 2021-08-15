@@ -28,6 +28,7 @@
                 <input class="form-control" type="file" id="input_csv" name="file">
                 <button class="btn btn-outline-success form-control" id="btn_csv">Check csv!</button>
             </form>
+            <div id="result_csv"></div>
         </div>
     </div>
 
@@ -45,6 +46,11 @@
         var btnUrl = document.getElementById("btn_url");
         btnUrl.addEventListener("click", function() {
             result_url.innerHTML = httpGet("home/check/" + input_url.value);
+        });
+
+        var btnCsv = document.getElementById("btn_csv");
+        btnCsv.addEventListener("click", function() {
+            result_csv.innerHTML = "Wait please, your answer is being calculated"
         });
 
     </script>
