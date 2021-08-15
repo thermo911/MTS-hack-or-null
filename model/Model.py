@@ -4,7 +4,7 @@ from sklearn.model_selection import cross_val_score, KFold
 from sklearn import metrics
 from sklearn.metrics import accuracy_score, roc_auc_score, f1_score
 class Model():
-    def __init__(self, depth=10, metric_period=100):
+    def __init__(self, depth=8, metric_period=100):
         self.model = CatBoostClassifier()
         self.fname_default = '../saved/'
         self.vocab = list('-.0123456789_abcdefghijklmnopqrstuvwxyz')
