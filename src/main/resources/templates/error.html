@@ -1,7 +1,7 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<html lang="en">
 <head>
-    <title>Result</title>
+    <title>Home</title>
     <!-- Required meta tags -->
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -13,7 +13,10 @@
 </head>
 
 <body>
-<div class="display-1">Result for <span th:text="${original_filename}">Filename</span></div>
-<a th:href="@{/home/file/{filename}(filename = ${filename})}">link</a>
+
+<div class="alert alert-warning">
+    Something goes wrong...
+</div>
+
 </body>
 </html>

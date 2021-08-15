@@ -13,28 +13,41 @@
 </head>
 
 <body>
-<div class="display-1">Home</div>
+<div class="display-1 p-25">Home</div>
 
 <div class="container">
-    <form class="form" th:action="@{/home/check}">
-        <label for="url" class="inline">Enter host</label>
-        <input type="text" id="url" class="inline form-control" name="url"
-               th:value="${param.url}"/>
-        <button type="submit" class="btn btn-success">Enter!</button>
-    </form>
-    <div class="p-10">
-        or check all url's in .csv file
+    <div class="row">
+        <div class="col">
+            <input class="form-control" type="text" id="input_url">
+            <button class="btn btn-outline-success form-control" id="btn_url">Check url!</button>
+            <div id="result_url"></div>
+        </div>
+        <div class="col">
+            <form class="form" enctype="multipart/form-data" id="form_csv"
+                    th:method="post" th:action="@{/home/check_csv}">
+                <input class="form-control" type="file" id="input_csv" name="file">
+                <button class="btn btn-outline-success form-control" id="btn_csv">Check csv!</button>
+            </form>
+        </div>
     </div>
-    <form class="form-inline w-50" th:method="post"
-          th:action="@{/home/check_all}"
-          enctype="multipart/form-data">
-        <div>
-            <input class="form-control" id="file" name="file" type="file"/>
-        </div>
-        <div>
-            <button class="btn btn-success float-right">Upload</button>
-        </div>
-    </form>
+
+
+
+    <script>
+
+        function httpGet(theUrl) {
+            var xmlHttp = new XMLHttpRequest();
+            xmlHttp.open( "GET", theUrl, false ); // false for synchronous request
+            xmlHttp.send( null );
+            return xmlHttp.responseText;
+        }
+
+        var btnUrl = document.getElementById("btn_url");
+        btnUrl.addEventListener("click", function() {
+            result_url.innerHTML = httpGet("home/check/" + input_url.value);
+        });
+
+    </script>
 </div>
 
 </body>

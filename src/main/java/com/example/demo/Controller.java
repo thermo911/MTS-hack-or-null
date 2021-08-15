@@ -31,34 +31,37 @@ public class Controller {
         return "home";
     }
 
-    @RequestMapping("/check")
-    public String checkOne(@RequestParam(value = "url") String url, Model model) {
-        logger.info(url);
+    @GetMapping("/check/{url}")
+    @ResponseBody
+    public ResponseEntity<String> checkOne(@PathVariable("url") String url) {
+        logger.info("URL received: {}", url);
 
         String result = requestService.getResultOne(url);
         if (result != null) {
             logger.info("Service result for {} : {}", url, result);
         } else {
-            logger.error("FUCK");
+            logger.error("Can't get result for {}", url);
         }
-        model.addAttribute("url", url);
-        model.addAttribute("result", result);
-        return "result_one";
+
+        return ResponseEntity.ok().body(result);
     }
 
-    @PostMapping("/check_all")
-    public String checkAll(@RequestParam("file") MultipartFile file, Model model) throws IOException {
+    @PostMapping("/check_csv")
+    public String checkAll(@RequestParam("file") MultipartFile file) {
         logger.info("File name {}, file content type {}, file size {}",
                 file.getOriginalFilename(), file.getContentType(), file.getSize());
-        String filename = fileService.saveFile(file.getInputStream());
-        logger.info("File saved: {}", filename);
+        String filename;
+        try {
+            filename = fileService.saveFile(file.getInputStream());
+        } catch (IOException e) {
+            logger.error("Error caught while saving {}", file.getOriginalFilename());
+            return "error";
+        }
 
-        // fileService.parseFile(filename);
+        logger.info("File saved: {}", filename);
         filename = requestService.getResultAll(filename);
 
-        model.addAttribute("original_filename", file.getOriginalFilename());
-        model.addAttribute("filename", filename);
-        return "result_all";
+        return String.format("redirect:/home/file/%s", filename);
     }
 
     @GetMapping("/file/{filename}")
@@ -72,5 +75,12 @@ public class Controller {
                 .contentType(MediaType.parseMediaType(contentType))
                 .body(data);
     }
+
+//    @GetMapping("/test")
+//    @ResponseBody
+//    public ResponseEntity<String> test() {
+//        System.out.println("777777777777777777777");
+//        return ResponseEntity.ok().body("test");
+//    }
 
 }
