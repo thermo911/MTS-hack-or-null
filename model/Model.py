@@ -41,3 +41,14 @@ class Model():
         if fname is None:
             fname = self.fname_default
         self.model.load_model(fname)
+
+    def evaluate(self, X, y_true):
+        y_pred = self.model.predict(X)
+        metrics = {
+            'accuracy': accuracy_score(y_pred, y_true),
+            'roc_auc': roc_auc_score(y_pred, y_true),
+            'precision': precision_score(y_pred, y_true),
+            'recall': recall_score(y_pred, y_true),
+        }
+
+        return metrics
