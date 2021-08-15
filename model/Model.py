@@ -5,7 +5,7 @@ from sklearn import metrics
 from sklearn.metrics import accuracy_score, roc_auc_score, precision_score, recall_score
 
 class Model():
-    def __int__(self, depth=10):
+    def __init__(self, depth=10, metric_period=100):
         self.model = CatBoostClassifier()
         self.fname_default = '../saved/'
         self.vocab = list('-.0123456789_abcdefghijklmnopqrstuvwxyz')
@@ -19,11 +19,16 @@ class Model():
             vocabulary=self.vocab
         )
 
-        self.model = CatBoostClassifier(depth=depth)
-    def fit(self, X, y, fname=None):
+        self.model = CatBoostClassifier(depth=depth,
+                                        metric_period=metric_period,
+                                        )
+
+    def fit(self, X, y, fname=None, verbose=False, save=False):
         X = self.process(X)
-        self.model.fit(X, y)
-        self.save_model(fname)
+        self.model.fit(X, y, verbose=verbose)
+        if save:
+            self.save_model(fname)
+
 
     def process(self, X):
         return self.vectorizer.fit_transform(X)
