@@ -1,10 +1,12 @@
 from flask import Flask
 import pandas as pd
 from model.Model import Model
+import numpy as np
 app = Flask('test')
 
 @app.route('/get_result/<site>')
 def get_result(site, methods=['GET']):
+    print(site)
     try:
         if len(site) > 4 and site[:4] == 'www.':
             return 'user site'
@@ -15,10 +17,10 @@ def get_result(site, methods=['GET']):
 
 @app.route('/get_result_csv/<file>')
 def get_result_csv(file, methods=['GET']):
-    try:
+    try
         df = pd.read_csv("data/" + file, header=None)
         new_path = file[:-4] + '_res.csv'
-        X = np.array(df[0])
+        X = np.array(df[1])
         preds = model.predict(X)
 
         data = np.stack((X, preds), axis=-1)
@@ -28,7 +30,8 @@ def get_result_csv(file, methods=['GET']):
         pd.DataFrame(data).to_csv('data/' + new_path, header=None, index=False)
         return new_path
     except:
-        return 'error'
+        return error
 
 model = Model()
+model.load_model('best_model')
 app.run()
